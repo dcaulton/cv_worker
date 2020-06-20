@@ -3,7 +3,7 @@ task nodes for computer vision work, intended to be run on hardware accelerated 
 
 
 ## what does this application do?
-cv_worker provides communications and data persistence layers around a system dedicated to supporting specific operations.  the cv_worker code will also include the executable code for the 'model' doing the operation of interest.  These models are typically driven by a biiiiig data file as well of course.  
+cv_worker provides communications and data persistence layers around a system dedicated to supporting specific operations.  the cv_worker code will also include the executable code for the 'model' doing the operation of interest.  These models are typically driven by a big data file as well of course.  
 
 The first operations it is being developed for are oriented around computer vision tasks, hence the name.  It's also imagined that this is running on a specialized machine, like something with special hardware resources to accelerate machine learning.
 
@@ -26,12 +26,12 @@ The first operations it is being developed for are oriented around computer visi
 ## What steps are needed to set up a system to run cv_worker?
 - Initially the owner of a WORKER NODE (say a raspberry pi, packaged with an intel movidius neural compute stick, local disk storage, etc) decides he wants to set up a neural network for recognizing hieroglyphics in images.
 - First a neural network is trained on this input on BUILD SYSTEM, let's say a desktop macintosh computer with an external GPU.
-- WORKER NODE is provisioned at the physical and os package level, including the configuring of those special resources like GPUs.  Work is complete when install requirements are satisfied and WORkER NODE boots up to the os.
+- WORKER NODE is provisioned at the physical and os package level, including the configuring of those special resources like GPUs.  Work is complete when install requirements are satisfied and WORKER NODE boots up to the os and all special hardware is recognized.
 - cv_worker and all its dependencies are installed on WORKER_NODE
 - cv_worker_config.py is run on WORKER_NODE to set the system up to receive tasks.
 - WORKER NODE is put on the network and is ready to perform work
 
-If the user is interfacing with WORKER NODE via a third party system, the user registers the system with that third party system.  Or, a clever third party system could be designed to poll for WORKER NODE and automatically start talking with it when it comes up at its expected host/port/ip address.
+If the user is interfacing with WORKER NODE via a third party system, the user registers WORKER NODE with that third party system.  Or, a clever third party system could be designed to poll for WORKER NODE and automatically start talking with it when it comes up at its expected host/port/ip address.
 
 
 ## Install requirements:

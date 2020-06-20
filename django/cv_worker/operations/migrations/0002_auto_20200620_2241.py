@@ -10,6 +10,7 @@ def add_ping(apps, schema_editor):
     operation = Operation(
       name='ping',
       description='basic ping operation',
+      status='ACTIVE',
     )
     operation.save()
 
