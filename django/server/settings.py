@@ -31,14 +31,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-#    'cv_worker.pipelines',
+    'cv_worker.attributes',
+    'cv_worker.tasks',
+    'cv_worker.scanners',
+    'cv_worker.operations',
     'django_extensions',
     'rest_framework',
 ]
