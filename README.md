@@ -3,7 +3,9 @@ task nodes for computer vision work, intended to be run on hardware accelerated 
 
 
 ## what does this application do?
-cv_worker provides communications and data persistence layers around a system dedicated to supporting specific operations.  The first operations it is being developed for are oriented around computer vision tasks, hence the name.  It's also imagined that this is running on a specialized machine, like something with special hardware resources to accelerate machine learning.
+cv_worker provides communications and data persistence layers around a system dedicated to supporting specific operations.  the cv_worker code will also include the executable code for the 'model' doing the operation of interest.  These models are typically driven by a biiiiig data file as well of course.  
+
+The first operations it is being developed for are oriented around computer vision tasks, hence the name.  It's also imagined that this is running on a specialized machine, like something with special hardware resources to accelerate machine learning.
 
 
 ## The anticipated modes of operation are:
