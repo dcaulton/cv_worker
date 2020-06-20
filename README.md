@@ -14,18 +14,20 @@ The first operations it is being developed for are oriented around computer visi
 - training / runtime analysis
 - data annotation
 - system administration
+- system monitoring, kind of a read only sysadmin
 
 
 ## How do clients consume this app?
-Upstream systems can call cv_worker via its rest interface to monitor and dispatch tasks.  cv_worker is designed to update the caller either via a persistent connection or by scheduled updates as it processes a task.
-This system can also be accessed from the command line or the django command line.
+- Upstream systems can call cv_worker via its rest interface to monitor and dispatch tasks.  cv_worker is designed to update the caller either via a persistent connection or by scheduled updates as it processes a task.
+- This system can also be accessed from the command line or the django command line.
+- CV worker also has a single page javascript dashboard app, optimized for monitoring and system administration tasks
 
 
 ## What steps are needed to set up a system to run cv_worker?
 - Initially the owner of a WORKER NODE (say a raspberry pi, packaged with an intel movidius neural compute stick, local disk storage, etc) decides he wants to set up a neural network for recognizing hieroglyphics in images.
-- First a neural network is trained on this input on BUILD SYSTEM, let's say he used his desktop macintosh computer with a external GPU.
-- She procures WORKER NODE and gets it to boot up to the os.
-- Python, cv_worker and all  their requirements are installed on WORKER_NODE
+- First a neural network is trained on this input on BUILD SYSTEM, let's say she used her desktop macintosh computer with an external GPU.
+- She procures WORKER NODE, configures those special resources like GPUs in the OS and gets it to boot up to the os.
+- Python, cv_worker and all their requirements are installed on WORKER_NODE
 - cv_worker_config.py is run on WORKER_NODE to set the system up to receive tasks.
 - WORKER NODE is put on the network and is ready to perform work
 
@@ -33,5 +35,6 @@ If the user is interfacing with WORKER NODE via a third party system, the user r
 
 
 ## Install requirements:
-python 3
-I've only installed on linux or mac, don't know/care what problems this has on windows
+- python 3
+- npm
+- I've only installed on linux or mac, don't know/care what problems this has on windows
