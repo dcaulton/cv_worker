@@ -14,7 +14,7 @@ The first operations it is being developed for are oriented around computer visi
 - training / runtime analysis
 - data annotation
 - system administration
-- system monitoring, kind of a read only sysadmin
+- system monitoring and tuning via the dashboard
 
 
 ## How do clients consume this app?
@@ -25,9 +25,9 @@ The first operations it is being developed for are oriented around computer visi
 
 ## What steps are needed to set up a system to run cv_worker?
 - Initially the owner of a WORKER NODE (say a raspberry pi, packaged with an intel movidius neural compute stick, local disk storage, etc) decides he wants to set up a neural network for recognizing hieroglyphics in images.
-- First a neural network is trained on this input on BUILD SYSTEM, let's say she used her desktop macintosh computer with an external GPU.
-- She procures WORKER NODE, configures those special resources like GPUs in the OS and gets it to boot up to the os.
-- Python, cv_worker and all their requirements are installed on WORKER_NODE
+- First a neural network is trained on this input on BUILD SYSTEM, let's say a desktop macintosh computer with an external GPU.
+- WORKER NODE is provisioned at the physical and os package level, including the configuring of those special resources like GPUs.  Work is complete when install requirements are satisfied and WORkER NODE boots up to the os.
+- cv_worker and all its dependencies are installed on WORKER_NODE
 - cv_worker_config.py is run on WORKER_NODE to set the system up to receive tasks.
 - WORKER NODE is put on the network and is ready to perform work
 
@@ -37,4 +37,7 @@ If the user is interfacing with WORKER NODE via a third party system, the user r
 ## Install requirements:
 - python 3
 - npm
+- a reachable sql database, e.g. mysql
+- a reachable messaging queue, e.g. rabbitmq
+- memory and disk requirements are driven by the specific models / operations being supported.  running cv_worker_config at install time will help determine if resources are sufficient
 - I've only installed on linux or mac, don't know/care what problems this has on windows
