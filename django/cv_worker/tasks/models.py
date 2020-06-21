@@ -32,6 +32,7 @@ class Task(models.Model):
             )
             print('closing out remote parent job')
             if response.status_code != 200:
+                print('remote job close faied with url {}'.format(update_url))
                 print('remote job close faied with status {}'.format(response.status_code))
                 print('remote job close content {}'.format(response.content))
 
@@ -56,13 +57,13 @@ class Task(models.Model):
                 payload['status'] = 'running'
             elif percent_complete == 1:
                 payload['status'] = 'success'
-            print('calling {}'.format(update_url))
             response = requests.patch(
                 update_url,
                 data=payload,
             )
             print('updating percent complete on remote parent job')
             if response.status_code != 200:
+                print('remote job update faied with url {}'.format(update_url))
                 print('remote job update faied with status {}'.format(response.status_code))
                 print('remote job update content {}'.format(response.content))
 
