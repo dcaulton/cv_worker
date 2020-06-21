@@ -1,4 +1,6 @@
+import json
 import uuid
+import requests
 from django.db import models
 from cv_worker.attributes.models import Attribute
 
@@ -12,6 +14,27 @@ class Task(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
+    def finish_successfully(self, response_object):
+        self.response_data = json.dumps(response_object)
+        self.status = 'success'
+        self.save()
+
+        update_url = self.get_job_update_url()
+        if update_url:
+            payload = {
+                'percent_complete': 1,
+                'status': 'success',
+                'response_data': self.response_data,
+            }
+            response = requests.patch(
+                update_url,
+                data=payload,
+            )
+            print('closing out remote parent job')
+            print('response status {}'.format(response.status_code))
+            print('response content {}'.format(response.content))
+
+
     def update_percent_complete(self, percent_complete):
         if Attribute.objects.filter(task=self).filter(name='percent_complete').exists():
             attribute = Attribute.objects.filter(task=self).filter(name='percent_complete').first()
@@ -24,22 +47,25 @@ class Task(models.Model):
             )
             attribute.save()
 
-        if Attribute.objects.filter(task=self).filter(name='job_update_url').exists():
-            # TODO update remote job if it exists
-            print('SHOULD BE UPDATING THE REMOTE JOB PERCENT COMPLETE HERE')
-
-    def update_message(self, message):
-        if Attribute.objects.filter(task=self).filter(name='message').exists():
-            attribute = Attribute.objects.filter(task=self).filter(name='message').first()
-            attribute.message = message
-            attribute.save()
-        else:
-            attribute = Attribute(
-                name='message',
-                value=message,
+        update_url = self.get_job_update_url()
+        if update_url:
+            payload = {
+                'percent_complete': percent_complete,
+            }
+            if 0 < percent_complete < 1:
+                payload['status'] = 'running'
+            elif percent_complete == 1:
+                payload['status'] = 'success'
+            print('calling {}'.format(update_url))
+            response = requests.patch(
+                update_url,
+                data=payload,
             )
-            attribute.save()
+            print('updating percent complete on remote parent job')
+            print('response status {}'.format(response.status_code))
+            print('response content {}'.format(response.content))
 
+    def get_job_update_url(self):
         if Attribute.objects.filter(task=self).filter(name='job_update_url').exists():
-            # TODO update remote job if it exists
-            print('SHOULD BE UPDATING THE REMOTE JOB MESSAGE HERE')
+            return Attribute.objects.filter(task=self).filter(name='job_update_url').first().value
+

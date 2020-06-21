@@ -11,20 +11,14 @@ def ping_cv_worker(task_id):
     task.status = 'running'
     task.save()
 
-    for i in range(10):
-        percent_done = i * 10
-        time.sleep(1)
+    for i in range(11):
+        percent_done = i * .1
+        time.sleep(5)
         task.update_percent_complete(percent_done)
         task.save()
 
-    task.update_message('we are finishing up my friend')
-    task.save()
-
     resp_obj = {
-        'message': 'flippity bippity',
+        'message': 'look at you, all solving problems and stuff',
     }
-    task.response_data = json.dumps(resp_obj)
-    task.status = 'success'
-    task.save()
 
-
+    task.finish_successfully(resp_obj)
