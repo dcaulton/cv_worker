@@ -31,9 +31,9 @@ class Task(models.Model):
                 data=payload,
             )
             print('closing out remote parent job')
-            print('response status {}'.format(response.status_code))
-            print('response content {}'.format(response.content))
-
+            if response.status_code != 200:
+                print('remote job close faied with status {}'.format(response.status_code))
+                print('remote job close content {}'.format(response.content))
 
     def update_percent_complete(self, percent_complete):
         if Attribute.objects.filter(task=self).filter(name='percent_complete').exists():
@@ -62,8 +62,9 @@ class Task(models.Model):
                 data=payload,
             )
             print('updating percent complete on remote parent job')
-            print('response status {}'.format(response.status_code))
-            print('response content {}'.format(response.content))
+            if response.status_code != 200:
+                print('remote job update faied with status {}'.format(response.status_code))
+                print('remote job update content {}'.format(response.content))
 
     def get_job_update_url(self):
         if Attribute.objects.filter(task=self).filter(name='job_update_url').exists():
