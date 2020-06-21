@@ -17,14 +17,11 @@ class OperationViewSet(viewsets.ViewSet):
                 'updated_on': datetime.datetime.strftime(operation.updated_on, '%Y-%m-%d %H:%M:%S'),
             }
 
-            attributes_list = []
+            attributes = {}
             if Attribute.objects.filter(operation=operation).exists():
                 for attribute in Attribute.objects.filter(operation=operation):
-                    attr_obj = {
-                        attribute.name: attribute.value,
-                    }
-                    attributes.append(attr_obj)
-            oper_obj['attributes'] = attributes_list
+                    attributes[attribute.name] = attribute.value
+            oper_obj['attributes'] = attributes
 
             operations_dict[operation.name] = oper_obj
         return Response({"operations": operations_dict})
@@ -44,13 +41,14 @@ class OperationViewSet(viewsets.ViewSet):
         }
 
         if Attribute.objects.filter(operation=operation).exists():
-            attributes = []
+            attributes = {}
             for attribute in Attribute.objects.filter(operation=operation):
-                attr_obj = {
-                    'name': attribute.name,
-                    'value': attribute.value,
-                }
-                attributes.append(attr_obj)
+                attributes[attribute.name] = attribute.value
         oper_obj['attributes'] = attr_obj
 
         return Response({"operation": oper_obj})
+
+    def delete(self, request, pk, format=None):
+        operation = Operation.objects.get(pk=pk)
+        operation.delete()
+        return Response('', status=204)

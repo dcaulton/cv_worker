@@ -1,14 +1,37 @@
 import datetime
 from rest_framework.response import Response
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from cv_worker.tasks.models import Task
 from cv_worker.attributes.models import Attribute
 from cv_worker.operations.models import Operation
 
 class TaskViewSet(viewsets.ViewSet):
-    def list(self, request):
-        tasks_list = Task.objects.all()
-        return Response({"tasks": tasks_list})
+    def retrieve(self, request, pk):
+        if not Task.objects.filter(pk=pk).exists():
+            return Response(None, status=status.HTTP_404_NOT_FOUND)
+
+        task = Task.objects.get(pk=pk)
+        operation_name = ''
+        if task.operation:
+            operation_name = task.operation.name
+        task_obj = {
+            'id': str(task.id),
+            'operation': operation_name,
+            'status': task.status,
+            'request_data': task.request_data,
+            'response_data': task.response_data,
+            'created_on': datetime.datetime.strftime(task.created_on, '%Y-%m-%d %H:%M:%S'),
+            'updated_on': datetime.datetime.strftime(task.updated_on, '%Y-%m-%d %H:%M:%S'),
+        }
+
+        if Attribute.objects.filter(task=task).exists():
+            attributes = {}
+            for attribute in Attribute.objects.filter(task=task):
+                attributes[attribute.name] = attribute.value
+        task_obj['attributes'] = attributes
+
+        return Response({"task": task_obj})
+
 
     def list(self, request):
         tasks_dict = {}
@@ -21,14 +44,11 @@ class TaskViewSet(viewsets.ViewSet):
                 'updated_on': datetime.datetime.strftime(task.updated_on, '%Y-%m-%d %H:%M:%S'),
             }
 
-            attributes_list = []
+            attributes = {}
             if Attribute.objects.filter(task=task).exists():
                 for attribute in Attribute.objects.filter(task=task):
-                    attr_obj = {
-                        attribute.name: attribute.value,
-                    }
-                    attributes_list.append(attr_obj)
-            task_obj['attributes'] = attributes_list
+                    attributes[attribute.name] = attribute.value
+            task_obj['attributes'] = attributes
 
             tasks_dict[str(task.id)] = task_obj
         return Response({"tasks": tasks_dict})
@@ -55,3 +75,8 @@ class TaskViewSet(viewsets.ViewSet):
             attribute.save()
 
         return Response({'task_id': task.id})
+
+    def delete(self, request, pk, format=None):
+        task = Task.objects.get(pk=pk)
+        task.delete()
+        return Response('', status=204)
