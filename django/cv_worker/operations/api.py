@@ -6,7 +6,7 @@ from cv_worker.attributes.models import Attribute
 
 class OperationViewSet(viewsets.ViewSet):
     def list(self, request):
-        operations_list = []
+        operations_dict = {}
         for operation in Operation.objects.all():
             oper_obj = {
                 'id': str(operation.id),
@@ -27,8 +27,8 @@ class OperationViewSet(viewsets.ViewSet):
                     attributes.append(attr_obj)
             oper_obj['attributes'] = attributes_list
 
-            operations_list.append(oper_obj)
-        return Response({"operations": operations_list})
+            operations_dict[operation.name] = oper_obj
+        return Response({"operations": operations_dict})
 
     def retrieve(self, request, pk):
         if not Operation.objects.filter(pk=pk).exists():
