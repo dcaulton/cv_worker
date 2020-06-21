@@ -5,19 +5,19 @@ from cv_worker.operations.models import Operation
 
 
 def add_ping(apps, schema_editor):
-    if Operation.objects.filter(name='ping').exists():
+    if Operation.objects.filter(name='ping_cv_worker').exists():
         return
     operation = Operation(
-      name='ping',
+      name='ping_cv_worker',
       description='basic ping operation',
       status='ACTIVE',
     )
     operation.save()
 
 def delete_ping(apps, schema_editor):
-    if not Operation.objects.filter(name='ping').exists():
+    if not Operation.objects.filter(name='ping_cv_worker').exists():
         return
-    Operation.objects.filter(name='ping').delete()
+    Operation.objects.filter(name='ping_cv_worker').delete()
 
 
 class Migration(migrations.Migration):
