@@ -4,6 +4,13 @@ from rest_framework import viewsets, status
 from cv_worker.tasks.models import Task
 from cv_worker.attributes.models import Attribute
 from cv_worker.operations.models import Operation
+from cv_worker.tasks import celery_tasks
+
+def dispatch_task(task):
+    if task.operation.name == 'ping_cv_worker':
+        celery_tasks.ping_cv_worker.delay(task.id)
+    else:
+        print('unrecognized operation *{}* for task {}'.format(task.operation.name, task.id))
 
 class TaskViewSet(viewsets.ViewSet):
     def retrieve(self, request, pk):
@@ -74,9 +81,12 @@ class TaskViewSet(viewsets.ViewSet):
             )
             attribute.save()
 
+        dispatch_task(task)
+
         return Response({'task_id': task.id})
 
     def delete(self, request, pk, format=None):
         task = Task.objects.get(pk=pk)
         task.delete()
         return Response('', status=204)
+
