@@ -21,8 +21,7 @@ class OperationViewSet(viewsets.ViewSet):
             if Attribute.objects.filter(operation=operation).exists():
                 for attribute in Attribute.objects.filter(operation=operation):
                     attr_obj = {
-                        'name': attribute.name,
-                        'value': attribute.value,
+                        attribute.name: attribute.value,
                     }
                     attributes.append(attr_obj)
             oper_obj['attributes'] = attributes_list
@@ -55,4 +54,3 @@ class OperationViewSet(viewsets.ViewSet):
         oper_obj['attributes'] = attr_obj
 
         return Response({"operation": oper_obj})
-
