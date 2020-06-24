@@ -18,8 +18,9 @@ The first operations it is being developed for are oriented around computer visi
 
 
 ## How do clients consume this app?
-- Upstream systems can call cv_worker via its rest interface to monitor and dispatch tasks.  cv_worker is designed to update the caller either via a persistent connection or by scheduled updates as it processes a task.
-- This system can also be accessed from the command line or the django command line.
+- for cv_workers configured as 'accept_calls' type, upstream systems can call cv_worker via its rest interface to monitor and dispatch tasks.  cv_worker is designed to update the caller either via a persistent connection or by scheduled updates as it processes a task.
+- for cv_workers configured as 'call_back' type, upstream system creates a job and waits for cv_worker to check in and pick upthe task.
+- This system can also be accessed from the command line
 - CV worker also has a single page javascript dashboard app, optimized for monitoring and system administration tasks
 
 
@@ -30,8 +31,11 @@ The first operations it is being developed for are oriented around computer visi
 - cv_worker and all its dependencies are installed on WORKER_NODE
 - cv_worker_config.py is run on WORKER_NODE to set the system up to receive tasks.
 - WORKER NODE is put on the network and is ready to perform work
+- If the user is interfacing with WORKER NODE via a third party system as an 'calls_back' worker, the user configures the call_back info, including the url of the third party system and any proxies that might be needed.
 
-If the user is interfacing with WORKER NODE via a third party system, the user registers WORKER NODE with that third party system.  Or, a clever third party system could be designed to poll for WORKER NODE and automatically start talking with it when it comes up at its expected host/port/ip address.
+At task execution time:
+- If the user is interfacing with WORKER NODE via a third party system as an 'accepts_calls' worker, the user registers WORKER NODE with that third party system. 
+- if the system is set to 'call_back_upon_request', the user presses the physical button on WORKER NODE, or uses the dashboard to initiate the callback to the third party system.  Otherwise WORKER NODE will poll the third party system at regular intervals.
 
 
 ## Install requirements:
