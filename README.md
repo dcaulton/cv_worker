@@ -1,6 +1,7 @@
 # cv_worker
 task nodes for computer vision work, intended to be run on hardware accelerated platforms
 
+this repository is a reference application.  It only supports the 'ping_cv_worker' operation.  To write a worker to do your own tasks, fork this project and make a new system for your needs, see 'writing your own cv_worker' below
 
 ## what does this application do?
 cv_worker provides communications and data persistence layers around a system dedicated to supporting specific operations.  the cv_worker code will also include the executable code for the 'model' doing the operation of interest.  These models are typically driven by a big data file as well of course.  
@@ -45,3 +46,14 @@ At task execution time:
 - a reachable messaging queue, e.g. rabbitmq
 - memory and disk requirements are driven by the specific models / operations being supported.  running cv_worker_config at install time will help determine if resources are sufficient
 - I've only installed on linux or mac, don't know/care what problems this has on windows
+
+## Writing your own cv_worker
+cv_workers are designed to work cooperatively in a network.  If you wish to develop a worker for a new task:
+- adhere to the contracts that are defined with external systems
+- adhere to the interfaces / json formats when talking to upstream and downstream nodes
+
+## architecture notes
+(link to cv_worker architecture illustration)
+- in general, cv workers are organized as individual nodes grouped into one of many worker pools.  
+- cv workers support specific operations, and when multiple workers in a worker pool support the same operation, they work cooperatively to load balance requests for that operation 
+- inter-worker-pool messages and global messages are managed by dedicated queues
