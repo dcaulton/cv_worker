@@ -11,9 +11,9 @@ from server import api
 
 
 router = get_router()
-router.register(r"api/v1/settings", api.ServerSettingsViewSet, basename="BarryWilliams")
+router.register(r"settings", api.ServerSettingsViewSet, basename="BarryWilliams")
 
 urlpatterns = [
   path('', include(router.urls)),
-  path("api/", include(router.urls)),
+  path("api/v1/", include(router.urls)),
 ]

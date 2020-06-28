@@ -5,6 +5,13 @@ from django.db import models
 from cv_worker.attributes.models import Attribute
 
 class Task(models.Model):
+    STATUS_SUCCESS = 'success'
+    STATUS_RUNNING = 'running'
+    STATUS_FAILED = 'failed'
+    STATUS_CREATED = 'created'
+    STATUS_WAITING = 'waiting'
+    STATUS_PAUSED = 'paused'
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     operation = models.ForeignKey('operations.Operation', on_delete=models.CASCADE, null=True)
     status = models.CharField(max_length=36)
@@ -16,14 +23,14 @@ class Task(models.Model):
 
     def finish_successfully(self, response_object):
         self.response_data = json.dumps(response_object)
-        self.status = 'success'
+        self.status = self.STATUS_SUCCESS
         self.save()
 
         update_url = self.get_job_update_url()
         if update_url:
             payload = {
                 'percent_complete': 1,
-                'status': 'success',
+                'status': self.STATUS_SUCCESS,
                 'response_data': self.response_data,
             }
             response = requests.patch(
@@ -54,9 +61,9 @@ class Task(models.Model):
                 'percent_complete': percent_complete,
             }
             if 0 < percent_complete < 1:
-                payload['status'] = 'running'
+                payload['status'] = self.STATUS_RUNNING
             elif percent_complete == 1:
-                payload['status'] = 'success'
+                payload['status'] = self.STATUS_SUCCESS
             response = requests.patch(
                 update_url,
                 data=payload,
