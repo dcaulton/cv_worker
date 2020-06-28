@@ -84,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'cv_worker',
         'USER': 'root',
-        'PASSWORD': 'admin',
+        'PASSWORD': '',
         'HOST': '127.0.0.1',
         'PORT': 3306,
     },
@@ -145,7 +145,9 @@ CELERY_RESULT_SERIALIZER='json'
 CELERYD_TASK_TIME_LIMIT = 1210
 CELERYD_TASK_SOFT_TIME_LIMIT = 1200
 
-#CUSTOM SETTINGS
-WORKER_POOL_ID = 'resource_pool_1'
-WORKER_ID = 'abc123'
-OPERATIONAL_MODE = 'call_back'
+
+import json
+import os
+settings_dir = os.path.join(BASE_DIR, 'server', 'settings.json')
+overrides = json.loads(open(settings_dir).read())
+globals().update(overrides)
