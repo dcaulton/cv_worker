@@ -146,6 +146,7 @@ CELERYD_TASK_TIME_LIMIT = 1210
 CELERYD_TASK_SOFT_TIME_LIMIT = 1200
 
 
+CV_WORKER = {}
 import json
 import os
 settings_dir = os.path.join(BASE_DIR, 'server', 'settings.json')

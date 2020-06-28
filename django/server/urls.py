@@ -7,7 +7,11 @@ import cv_worker.scanners.urls
 import cv_worker.tasks.urls
 import cv_worker.operations.urls
 
+from server import api
+
+
 router = get_router()
+router.register(r"api/v1/settings", api.ServerSettingsViewSet, basename="BarryWilliams")
 
 urlpatterns = [
   path('', include(router.urls)),
