@@ -57,3 +57,4 @@ cv_workers are designed to work cooperatively in a network.  If you wish to deve
 - in general, cv workers are organized as individual nodes grouped into one of many worker pools.  
 - cv workers support specific operations, and when multiple workers in a worker pool support the same operation, they work cooperatively to load balance requests for that operation 
 - inter-worker-pool messages and global messages are managed by dedicated queues
+.
