@@ -1,17 +1,19 @@
 {
-  "WORKER_POOL_ID": "workerpool_1",
-  "WORKER_ID": "abc123",
-  "OPERATIONAL_MODE": "call_back",
-  "CALL_BACK_MODE": "http",
-  "LIFECYCLE_TYPE": "discrete",
-  "RUN_NODE_SERVER": false,
-  "PARENT_URL": "",
-  "STORAGE_BASE_FILEPATH": "",
-  "STORAGE_BASE_URL": "",
-  "GLOBAL_QUEUE": {
-    "NAME": "cv_global"
-  },
-  "WORKER_POOL_QUEUE": {
-    "NAME": "workerpool_1"
+  "CV_WORKER": {
+    "WORKER_POOL_ID": "workerpool_1",
+    "WORKER_ID": "abc123",
+    "OPERATIONAL_MODE": "call_back",
+    "CALL_BACK_MODE": "http",
+    "LIFECYCLE_TYPE": "discrete",
+    "RUN_NODE_SERVER": false,
+    "PARENT_URL": "",
+    "STORAGE_BASE_FILEPATH": "",
+    "STORAGE_BASE_URL": "",
+    "GLOBAL_QUEUE": {
+      "NAME": "cv_global"
+    },
+    "WORKER_POOL_QUEUE": {
+      "NAME": "workerpool_1"
+    }
   }
 }
